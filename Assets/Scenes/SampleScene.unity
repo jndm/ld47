@@ -567,6 +567,7 @@ MonoBehaviour:
   usedWormholesText: {fileID: 209013030}
   scoreCardManager: {fileID: 1406705537}
   levels:
+  - Level13
   - Level1
   - Level2
 --- !u!4 &265819079
@@ -1027,7 +1028,8 @@ MonoBehaviour:
   player: {fileID: 1402770662}
   cameraHeight: 800
   cameraTransitionSpeed: 0.5
-  cameraMoveSpeed: 5.2
+  cameraTeleportDistance: 10
+  cameraMoveSpeed: 7
   wormholeManager: {fileID: 265819078}
 --- !u!20 &519420031
 Camera:
@@ -6367,6 +6369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9a2497aec6203434f8172ee708af43e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  explosionParticlePrefab: {fileID: 5506051078542481759, guid: 044c05960be8ce84ea9cda4f5833b56d, type: 3}
 --- !u!4 &1402770667
 Transform:
   m_ObjectHideFlags: 0
