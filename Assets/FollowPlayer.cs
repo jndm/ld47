@@ -28,7 +28,7 @@ public class FollowPlayer : MonoBehaviour
         this.transform.position = new Vector3(transform.position.x, transform.position.y, -cameraHeight);
     }
 
-    void LateUpdate()
+    void FixedUpdate()
     {
         var wormhole = wormholeManager.ActiveWormhole;
         if (wormhole != null) {
