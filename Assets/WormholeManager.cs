@@ -164,6 +164,14 @@ public class WormholeManager : MonoBehaviour {
         }
 
         IsPlayerActive = false;
+        player.SetActive(false);
+
+        StartCoroutine(ResetRoutine());
+    }
+
+    IEnumerator ResetRoutine() {
+
+        yield return new WaitForSeconds(1.5f);
 
         CreateWormHole(startGameObject.transform.position);
 
