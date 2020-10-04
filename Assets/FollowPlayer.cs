@@ -14,6 +14,9 @@ public class FollowPlayer : MonoBehaviour
     [SerializeField]
     protected float cameraTransitionSpeed = 1;
 
+    [SerializeField]
+    protected float cameraTeleportDistance = 10f;
+
 
     [SerializeField]
     protected float cameraMoveSpeed = 5.2f;
@@ -44,7 +47,7 @@ public class FollowPlayer : MonoBehaviour
         var playerPosition = new Vector3(player.transform.position.x, player.transform.position.y, -cameraHeight);
 
         var targetPosition = Vector3.Lerp(playerPosition, wormholePosition, transitionState);
-        if ((targetPosition - transform.position).sqrMagnitude > 5f * 5f) {
+        if ((targetPosition - transform.position).sqrMagnitude > cameraTeleportDistance * cameraTeleportDistance) {
             this.transform.position = targetPosition;
         } else {
             this.transform.position = Vector3.MoveTowards(this.transform.position, targetPosition, cameraMoveSpeed * Time.deltaTime);
