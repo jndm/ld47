@@ -93,7 +93,8 @@ public class WormholeManager : MonoBehaviour {
 
         player.SetActive(true);
         IsPlayerActive = true;
-        player.transform.position = startGameObject.transform.position + startGameObject.transform.right * 7f;
+        player.transform.position = startGameObject.transform.position + startGameObject.transform.up * -7f;
+        player.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.right);
     }
 
     // Update is called once per frame
@@ -174,10 +175,11 @@ public class WormholeManager : MonoBehaviour {
         yield return new WaitForSeconds(1.5f);
 
         CreateWormHole(startGameObject.transform.position);
+        WormholesUsed += 1;
 
         player.SetActive(true);
         IsPlayerActive = true;
-        player.transform.position = startGameObject.transform.position + startGameObject.transform.right * 7f;
+        player.transform.position = startGameObject.transform.position + startGameObject.transform.up * -7f;
     }
 
     private void OnPlayerFinish()

@@ -95,5 +95,9 @@ public class Asteroid : MonoBehaviour
             Gizmos.DrawSphere(tetherPoint, .5f);
             Gizmos.DrawWireSphere(tetherPoint, (transform.position - tetherPoint).magnitude);
         }
+        if (moveMode == MoveMode.PingPong) {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(transform.position, transform.position + direction * maxMovementLength);
+        }
     }
 }
