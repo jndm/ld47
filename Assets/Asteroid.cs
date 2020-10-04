@@ -2,12 +2,24 @@
 
 public class Asteroid : MonoBehaviour
 {
+    enum MoveMode {
+        PingPong,
+        Circle
+    };
+
+    [SerializeField]
+    private MoveMode moveMode = MoveMode.PingPong;
+
     [SerializeField]
     private Vector3 direction;
-    [SerializeField]
+    [SerializeField,Tooltip("PingPong: units/s\nCircle: degrees/s")]
     private float speed;
     [SerializeField]
     private int maxMovementLength;
+
+    [Header("Circle Mode Options")]
+    [SerializeField]
+    private Vector3 tetherPoint;
 
     private bool swapDirection = false;
 
@@ -38,23 +50,50 @@ public class Asteroid : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+        //Rotation animation
         this.transform.Rotate(new Vector3(rotationX, rotationY, rotationZ), this.rotationSpeed * Time.deltaTime);
 
+        switch(moveMode) {
+            case MoveMode.Circle:
+                CircleMove();
+                break;
+            case MoveMode.PingPong:
+            default:
+                PingPongMove();
+                break;
+        }
+    }
+
+    private void CircleMove() {
+        this.transform.RotateAround(
+            tetherPoint,
+            Vector3.forward,
+            speed * Time.deltaTime
+        );
+    }
+
+    private void PingPongMove() {
         var distanceMoved = Vector2.Distance(this.transform.position, distanceMeasurePosition);
 
         var normalizedDistance = direction.normalized;
-        if (distanceMoved >= maxMovementLength )
-        {
+        if (distanceMoved >= maxMovementLength) {
             distanceMeasurePosition = this.transform.position;
             swapDirection = !swapDirection;
         }
 
 
-        if (swapDirection)
-        {
+        if (swapDirection) {
             normalizedDistance = -normalizedDistance;
         }
 
         this.transform.position = this.transform.position + normalizedDistance * speed * Time.deltaTime;
+    }
+
+    private void OnDrawGizmosSelected() {
+        if (moveMode == MoveMode.Circle) {
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(tetherPoint, .5f);
+            Gizmos.DrawWireSphere(tetherPoint, (transform.position - tetherPoint).magnitude);
+        }
     }
 }
