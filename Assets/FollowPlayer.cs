@@ -16,44 +16,38 @@ public class FollowPlayer : MonoBehaviour
 
 
     [SerializeField]
-    protected float cameraTransitionMoveSpeed = 1;
+    protected float cameraMoveSpeed = 5.2f;
 
     [SerializeField]
     protected WormholeManager wormholeManager;
 
-    private Vector3 oldWormholePosition;
-    private float transationState = 0;
+    private Vector3 wormholePosition;
+    private float transitionState = 0;
 
-    // Start is called before the first frame update
-    void Start()
-    {     
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+    private void Start() {
+        this.transform.position = new Vector3(transform.position.x, transform.position.y, -cameraHeight);
     }
 
     void LateUpdate()
     {
         var wormhole = wormholeManager.ActiveWormhole;
-        if (wormhole != null)
-        {
-            oldWormholePosition = new Vector3(wormhole.transform.position.x, wormhole.transform.position.y, -cameraHeight);
-            transationState += Time.deltaTime * cameraTransitionSpeed;
+        if (wormhole != null) {
+            wormholePosition = new Vector3(wormhole.transform.position.x, wormhole.transform.position.y, -cameraHeight);
+            transitionState += Time.deltaTime * cameraTransitionSpeed;
         } 
         else
         {
-            transationState -= Time.deltaTime * cameraTransitionSpeed;
+            transitionState -= Time.deltaTime * cameraTransitionSpeed;
         }
-
-        transationState = Mathf.Clamp(transationState, 0, 0.5f);
+        transitionState = Mathf.Clamp(transitionState, 0, 0.5f);
 
         var playerPosition = new Vector3(player.transform.position.x, player.transform.position.y, -cameraHeight);
 
-        //this.transform.position = new Vector3(player.transform.position.x, player.transform.position.y, -cameraHeight);
-        var targetPosition = Vector3.Lerp(playerPosition, oldWormholePosition, transationState);
-        this.transform.position = Vector3.MoveTowards(this.transform.position, targetPosition, cameraTransitionMoveSpeed);
+        var targetPosition = Vector3.Lerp(playerPosition, wormholePosition, transitionState);
+        if ((targetPosition - transform.position).sqrMagnitude > 5f * 5f) {
+            this.transform.position = targetPosition;
+        } else {
+            this.transform.position = Vector3.MoveTowards(this.transform.position, targetPosition, cameraMoveSpeed * Time.deltaTime);
+        }
     }
 }
